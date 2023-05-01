@@ -26,7 +26,17 @@ main>div {
     width: 100%;
 }
 
+.map-container {
+    height: calc(100% - 15rem);
+    width: 100%;
+}
+
 .headerinfo {
     font-size: .65rem;
     letter-spacing: .1rem;
+}
+
+.leaflet-div-icon {
+    background-color: transparent;
+    border: none;
 }

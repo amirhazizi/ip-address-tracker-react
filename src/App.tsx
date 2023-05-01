@@ -1,14 +1,32 @@
 import headerImg from "./assets/pattern-bg-mobile.png"
 import { MdKeyboardArrowRight } from "react-icons/md"
-import { GoLocation } from "react-icons/go"
+import { iconPerson } from "./assets/Icon"
+import { MapContainer, TileLayer, useMap, Popup, Marker } from "react-leaflet"
 function App() {
+  // var map = L.map("map").setView([51.505, -0.09], 13)
   return (
     <main className='relative grid min-h-screen items-start justify-center'>
-      <div className='floatContent h-full absolute w-full top-0 left-0 -z-10'>
+      <div className='floatContent h-full absolute w-full top-0 left-0  z-10'>
         <img src={headerImg} alt='header' />
-        <div id='map' className=''></div>
+
+        <MapContainer
+          center={[51.505, -0.09]}
+          zoom={15}
+          className='map-container'
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+          />
+          <Marker position={[51.505, -0.09]} icon={iconPerson}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        </MapContainer>
       </div>
-      <div className='py-8 space-y-5'>
+
+      <div className='py-8 space-y-5 relative z-20'>
         <h1 className='text-center text-2xl text-white'>IP Address Tracker</h1>
         <form className='relative'>
           <input

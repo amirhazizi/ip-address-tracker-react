@@ -550,8 +550,12 @@ video {
   top: 50%;
 }
 
-.-z-10 {
-  z-index: -10;
+.z-10 {
+  z-index: 10;
+}
+
+.z-20 {
+  z-index: 20;
 }
 
 .grid {
@@ -721,7 +725,17 @@ main>div {
   width: 100%;
 }
 
+.map-container {
+  height: calc(100% - 15rem);
+  width: 100%;
+}
+
 .headerinfo {
   font-size: .65rem;
   letter-spacing: .1rem;
+}
+
+.leaflet-div-icon {
+  background-color: transparent;
+  border: none;
 }
