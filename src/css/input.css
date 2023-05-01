@@ -22,12 +22,12 @@ main>div {
 }
 
 .floatContent>img {
-    height: 15rem;
+    height: 12rem;
     width: 100%;
 }
 
 .map-container {
-    height: calc(100% - 15rem);
+    height: calc(100% - 12rem);
     width: 100%;
 }
 

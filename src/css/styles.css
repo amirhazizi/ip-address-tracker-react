@@ -661,6 +661,10 @@ video {
   padding-bottom: 2rem;
 }
 
+.pl-4 {
+  padding-left: 1rem;
+}
+
 .text-center {
   text-align: center;
 }
@@ -721,12 +725,12 @@ main>div {
 }
 
 .floatContent>img {
-  height: 15rem;
+  height: 12rem;
   width: 100%;
 }
 
 .map-container {
-  height: calc(100% - 15rem);
+  height: calc(100% - 12rem);
   width: 100%;
 }
 
@@ -738,4 +742,9 @@ main>div {
 .leaflet-div-icon {
   background-color: transparent;
   border: none;
+}
+
+.focus\:outline-none:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
 }
