@@ -17,3 +17,16 @@ body {
 }
 
 /* actual css */
+main>div {
+    width: min(85vw, 1000px)
+}
+
+.floatContent>img {
+    height: 15rem;
+    width: 100%;
+}
+
+.headerinfo {
+    font-size: .65rem;
+    letter-spacing: .1rem;
+}
