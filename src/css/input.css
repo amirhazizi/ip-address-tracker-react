@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* global font family */
+body {
+    font-family: 'Rubik',
+        sans-serif;
+    font-size: 18px;
+}
+
+/* custom properties */
+:root {
+    /* ## Colors */
+    --cl-Very-Dark-Gray: hsl(0, 0%, 17%);
+    --cl-Dark-Gray: hsl(0, 0%, 59%);
+}
+
+/* actual css */
