@@ -7,6 +7,7 @@ import Map from "./Map"
 import axios from "axios"
 import reducer from "./reducer"
 import { INVALID_IP, CURRECT_IP, REST } from "./actions"
+import Footer from "./components/Footer"
 const getUserIP = "https://api.ipify.org/?format=json"
 const mainUrl = "https://geo.ipify.org/api/v2"
 const apiKey = `apiKey=${import.meta.env.VITE_API_KEY}`
@@ -68,12 +69,11 @@ function App() {
       setPosition([x, y])
       notificationDistpatch({
         type: CURRECT_IP,
-        payload: "Location Updated Click on the Map",
+        payload: "Location Updated",
       })
       setIsLoading(false)
     } catch (error) {
       console.log(error)
-      // notificationDistpatch({ type: INVALID_IP, payload: "Invalid IP" })
       setIsLoading(false)
     }
   }
@@ -113,15 +113,17 @@ function App() {
         <Map pos={position} />
       </div>
 
-      <div className='py-8 space-y-5 relative z-20 md:space-y-7 md:py-6'>
-        <h1 className='text-center text-2xl text-white'>IP Address Tracker</h1>
-        <form className='relative max-w-md mx-auto' onSubmit={handleSubmit}>
+      <div className='py-8 space-y-5 relative z-20 md:space-y-7'>
+        <h1 className='text-center text-2xl text-white md:text-3xl'>
+          IP Address Tracker
+        </h1>
+        <form className='relative max-w-lg mx-auto' onSubmit={handleSubmit}>
           <input
             value={userInput}
             placeholder='Search for any IP address or domain'
             onChange={(e) => setUserInput(e.target.value)}
             type='text'
-            className='pl-4 w-full py-3 rounded-xl overflow-hidden focus:outline-none'
+            className='pl-4 w-full py-3 rounded-xl overflow-hidden focus:outline-none '
           />
           <button
             type='submit'
@@ -144,13 +146,15 @@ function App() {
             <p className='headerinfo font-bold uppercase text-clVeryDarkGray opacity-50'>
               ip address
             </p>
-            <h1 className='font-bold text-clVeryDarkGray'>{userData.ip}</h1>
+            <h1 className='font-bold text-clVeryDarkGray text-2xl'>
+              {userData.ip}
+            </h1>
           </div>
           <div className='space-y-1 lg:border-l lg:border-clDarkGray lg:pl-6'>
             <p className='headerinfo font-bold uppercase text-clVeryDarkGray opacity-50'>
               location
             </p>
-            <h1 className='font-bold text-clVeryDarkGray'>
+            <h1 className='font-bold text-clVeryDarkGray text-2xl'>
               {userData.location === "ZZ,  "
                 ? "Middle of nowhere"
                 : userData.location}
@@ -160,7 +164,7 @@ function App() {
             <p className='headerinfo font-bold uppercase text-clVeryDarkGray opacity-50'>
               timezone
             </p>
-            <h1 className='font-bold text-clVeryDarkGray'>
+            <h1 className='font-bold text-clVeryDarkGray text-2xl'>
               {userData.timezone ? `UTC${userData.timezone}` : "undefined"}
             </h1>
           </div>
@@ -168,19 +172,20 @@ function App() {
             <p className='headerinfo font-bold uppercase text-clVeryDarkGray opacity-50'>
               isp
             </p>
-            <h1 className='font-bold text-clVeryDarkGray'>
+            <h1 className='font-bold text-clVeryDarkGray text-2xl'>
               {userData.isp || "undefined"}
             </h1>
           </div>
         </div>
       </div>
       <div
-        className={`fixed bottom-0 left-1/2 bg-gray-900 w-fit z-50 text-white p-2 px-4 -translate-x-1/2 rounded-t-xl transition-transform text-sm ${
-          notificationState.isShow ? "translate-y-0" : "translate-y-14"
+        className={`fixed top-0 left-1/2 bg-gray-900 w-fit z-50 text-white p-2 px-5 -translate-x-1/2 rounded-b-xl transition-transform ${
+          notificationState.isShow ? "translate-y-0" : "-translate-y-14"
         }`}
       >
         {notificationState.content}
       </div>
+      <Footer />
     </main>
   )
 }

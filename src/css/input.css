@@ -18,16 +18,16 @@ body {
 
 /* actual css */
 main>div {
-    width: min(85vw, 1000px)
+    width: min(85vw, 1100px)
 }
 
 .floatContent>img {
-    height: 13.5rem;
+    height: 15.5rem;
     width: 100%;
 }
 
 .map-container {
-    height: calc(100% - 13.5rem);
+    height: calc(100% - 15.5rem);
     width: 100%;
 }
 
