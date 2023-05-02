@@ -1,5 +1,5 @@
 import L from "leaflet"
-import iconSVG from "./icon-location.svg"
+import iconSVG from "./assets/icon-location.svg"
 const iconPerson = new L.Icon({
   iconUrl: iconSVG,
   iconAnchor: undefined,

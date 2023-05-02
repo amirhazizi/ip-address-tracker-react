@@ -1,9 +1,9 @@
-import { iconPerson } from "./assets/Icon"
+import { iconPerson } from "./Icon"
 import { MapContainer, TileLayer, Marker, useMapEvent } from "react-leaflet"
 type MapProps = {
   pos: any
 }
-const NewMarker = ({ pos }: { pos: any }) => {
+const NewMarker = ({ pos }: MapProps) => {
   const map = useMapEvent("click", () => {
     map.setView(pos, map.getZoom())
   })

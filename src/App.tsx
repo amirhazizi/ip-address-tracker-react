@@ -1,24 +1,37 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useReducer } from "react"
 import headerImg from "./assets/pattern-bg-mobile.png"
 import { MdKeyboardArrowRight } from "react-icons/md"
+import roling from "./assets/Rolling.svg"
 import Map from "./Map"
 import axios from "axios"
+import reducer from "./reducer"
+import { INVALID_IP, CURRECT_IP, REST } from "./actions"
 const getUserIP = "https://api.ipify.org/?format=json"
 const mainUrl = "https://geo.ipify.org/api/v2"
 const apiKey = `apiKey=${import.meta.env.VITE_API_KEY}`
 const initialData = {
-  ip: "loading...",
-  location: "loading...",
-  timezone: "loading...",
-  isp: "loading...",
+  ip: "164.89.39.12",
+  location: "US, Kingsport 37660",
+  timezone: "-04:00",
+  isp: "Eastman Chemical Company",
 }
 const ipValidate =
   /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
+
+const initialState = {
+  content: "",
+  isShow: false,
+}
 function App() {
   const [userInput, setUserInput] = useState("")
   const [userAPI, setUserAPI] = useState("")
   const [userData, setUserData] = useState(initialData)
   const [position, setPosition] = useState<any>([35.505, -0.09])
+  const [isLoading, setIsLoading] = useState(false)
+  const [notificationState, notificationDistpatch] = useReducer(
+    reducer,
+    initialState
+  )
 
   const fetchUserAPI = async () => {
     try {
@@ -31,6 +44,7 @@ function App() {
   }
 
   const fetchUserAPIData = async () => {
+    setIsLoading(true)
     try {
       const { data } = await axios(
         `${mainUrl}/country,city?${apiKey}&ipAddress=${userAPI}`
@@ -49,8 +63,14 @@ function App() {
 
       setUserData(newData)
       setPosition([x, y])
+      notificationDistpatch({
+        type: CURRECT_IP,
+        payload: "Location Updated Click on the Map",
+      })
+      setIsLoading(false)
     } catch (error) {
       console.log(error)
+      setIsLoading(false)
     }
   }
   useEffect(() => {
@@ -59,6 +79,12 @@ function App() {
   }, [])
   useEffect(() => {
     fetchUserAPIData()
+    const timeout = setTimeout(() => {
+      notificationDistpatch({ type: REST, payload: "" })
+    }, 4500)
+    return () => {
+      clearTimeout(timeout)
+    }
   }, [userAPI])
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -90,7 +116,16 @@ function App() {
             <MdKeyboardArrowRight className='fill-white absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 scale-125' />
           </button>
         </form>
-        <div className='p-5 space-y-4 rounded-xl bg-white text-center shadow-xl'>
+        <div className='p-5 space-y-4 rounded-xl bg-white text-center shadow-xl relative'>
+          {isLoading && (
+            <div className='absolute inset-0 bg-clDarkGray bg-opacity-50 rounded-xl'>
+              <img
+                className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
+                src={roling}
+                alt=''
+              />
+            </div>
+          )}
           <div className='space-y-1'>
             <p className='headerinfo font-bold uppercase text-clVeryDarkGray opacity-50'>
               ip address
@@ -110,9 +145,7 @@ function App() {
               timezone
             </p>
             <h1 className='font-bold text-clVeryDarkGray'>
-              {userData.timezone !== "loading..."
-                ? `UTC${userData.timezone}`
-                : `loading...`}
+              UTC{userData.timezone}
             </h1>
           </div>
           <div className='space-y-1'>
@@ -122,6 +155,13 @@ function App() {
             <h1 className='font-bold text-clVeryDarkGray'>{userData.isp}</h1>
           </div>
         </div>
+      </div>
+      <div
+        className={`fixed bottom-0 left-1/2 bg-gray-900 w-fit z-50 text-white p-2 px-4 -translate-x-1/2 rounded-t-xl transition-transform text-sm ${
+          notificationState.isShow ? "translate-y-0" : "translate-y-14"
+        }`}
+      >
+        {notificationState.content}
       </div>
     </main>
   )
