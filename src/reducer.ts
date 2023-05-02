@@ -11,6 +11,9 @@ const reducer = (state: StateProps, action: ActionProps) => {
   if (action.type === CURRECT_IP) {
     return { isShow: true, content: action.payload }
   }
+  if (action.type === INVALID_IP) {
+    return { isShow: true, content: action.payload }
+  }
   if (action.type === REST) {
     return { ...state, isShow: false }
   }
