@@ -37,11 +37,9 @@ function App() {
 
   const fetchUserAPI = async () => {
     try {
-      if (userAPI.length === 0) {
-        const { data } = await axios(getUserIP)
-        setUserAPI(data.ip)
-        setUserInput(data.ip)
-      }
+      const { data } = await axios(getUserIP)
+      setUserAPI(data.ip)
+      setUserInput(data.ip)
     } catch (error) {
       console.log(error)
     }
@@ -49,6 +47,8 @@ function App() {
 
   const fetchUserAPIData = async () => {
     setIsLoading(true)
+    console.log(`${mainUrl}/country,city?${apiKey}&ipAddress=${userAPI}`)
+
     try {
       const { data } = await axios(
         `${mainUrl}/country,city?${apiKey}&ipAddress=${userAPI}`
@@ -127,7 +127,7 @@ function App() {
           />
           <button
             type='submit'
-            className='absolute right-0 top-1/2 -translate-y-1/2 bg-black h-full w-12 rounded-r-xl'
+            className='absolute right-0 top-1/2 -translate-y-1/2 bg-black h-full w-12 rounded-r-xl transition-colors hover:bg-gray-600'
           >
             <MdKeyboardArrowRight className='fill-white absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 scale-125' />
           </button>
