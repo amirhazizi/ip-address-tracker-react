@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react"
 import headerImg from "./assets/pattern-bg-mobile.png"
 import { MdKeyboardArrowRight } from "react-icons/md"
-import { iconPerson } from "./assets/Icon"
-import { MapContainer, TileLayer, Popup, Marker } from "react-leaflet"
+import Map from "./Map"
 import axios from "axios"
 const getUserIP = "https://api.ipify.org/?format=json"
 const mainUrl = "https://geo.ipify.org/api/v2"
-// country,city?apiKey=&ipAddress=8.8.8.8
 const apiKey = `apiKey=${import.meta.env.VITE_API_KEY}`
 const initialData = {
   ip: "loading...",
@@ -14,10 +12,14 @@ const initialData = {
   timezone: "loading...",
   isp: "loading...",
 }
+const ipValidate =
+  /^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?).(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/
 function App() {
   const [userInput, setUserInput] = useState("")
-  const [userAPI, setUserAPI] = useState(0)
+  const [userAPI, setUserAPI] = useState("")
   const [userData, setUserData] = useState(initialData)
+  const [position, setPosition] = useState<any>([35.505, -0.09])
+
   const fetchUserAPI = async () => {
     try {
       const { data } = await axios(getUserIP)
@@ -27,6 +29,7 @@ function App() {
       console.log(error)
     }
   }
+
   const fetchUserAPIData = async () => {
     try {
       const { data } = await axios(
@@ -43,7 +46,9 @@ function App() {
         timezone,
         isp,
       }
+
       setUserData(newData)
+      setPosition([x, y])
     } catch (error) {
       console.log(error)
     }
@@ -52,31 +57,26 @@ function App() {
     fetchUserAPI()
     fetchUserAPIData()
   }, [])
+  useEffect(() => {
+    fetchUserAPIData()
+  }, [userAPI])
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (ipValidate.test(userInput)) {
+      setUserAPI(userInput)
+    }
+  }
 
   return (
     <main className='relative grid min-h-screen items-start justify-center'>
       <div className='floatContent h-full absolute w-full top-0 left-0  z-10'>
         <img src={headerImg} alt='header' />
-        <MapContainer
-          center={[35.75, 51.5148]}
-          zoom={15}
-          className='map-container'
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-          />
-          <Marker position={[51.505, -0.09]} icon={iconPerson}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker>
-        </MapContainer>
+        <Map pos={position} />
       </div>
 
       <div className='py-8 space-y-5 relative z-20'>
         <h1 className='text-center text-2xl text-white'>IP Address Tracker</h1>
-        <form className='relative'>
+        <form className='relative' onSubmit={handleSubmit}>
           <input
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
